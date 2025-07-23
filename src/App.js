@@ -7,10 +7,13 @@ import { useEffect, useState } from 'react';
 import Todo from './Todo';
 
 function App() {
-  const [todo, setTodo] = useState([
-    {id:1, title:'Learn web', checked:true},
-    {id:2, title:'Get a job', checked:false}
-  ]);
+  const [todo, setTodo] = useState(()=>{
+    const todoStringFromStorage = window.localStorage.getItem('todo');
+    return todoStringFromStorage ?  JSON.parse(todoStringFromStorage) : [
+      {id:1, title:'Learn web', checked:true},
+      {id:2, title:'Get a job', checked:false}
+    ]
+  });
   const checkUpdate = (id, value)=>{
     let newtodos = todo.map(item=>{
       return item.id === id ?  {...item, checked:value} : item
@@ -50,6 +53,7 @@ function App() {
     const todoString = JSON.stringify(todo); // 객체,배열을JSON 문자열 변환
     window.localStorage.setItem('todo', todoString);//들어오는 값은 무조건 문자열이여야한다.
   },[todo]);
+
   return (
     <Container>
       <h1>To Do List</h1>
