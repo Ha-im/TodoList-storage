@@ -3,7 +3,7 @@ import './App.css';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Todo from './Todo';
 
 function App() {
@@ -44,8 +44,12 @@ function App() {
       { id: prev[prev.length - 1].id + 1 || 1, title: value, checked: false }
     ]);
   };  
-
-
+  // useEffect(할일,[]) // 아무것도 안적었을때, 할일은 최초 실행됬을때 한번만 작동 
+  // useEffect(할일,[todo]) // 할일 최초 실행,todo의 변동사항이 발생시 다시 할일 작동
+  useEffect(()=>{
+    const todoString = JSON.stringify(todo); // 객체,배열을JSON 문자열 변환
+    window.localStorage.setItem('todo', todoString);//들어오는 값은 무조건 문자열이여야한다.
+  },[todo]);
   return (
     <Container>
       <h1>To Do List</h1>
